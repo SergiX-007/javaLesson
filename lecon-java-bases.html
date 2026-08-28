@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leçon — Java, les bases en accéléré</title>
+<style>
+  :root{
+    --bg:#0e0d0b; --bg2:#1a1712; --card:#191510; --line:#3a332a;
+    --txt:#e8e1d6; --txt-dim:#a89e8e; --title:#fff6e9;
+    --java:#e76f00;     /* orange Java */
+    --java2:#f5a623;
+    --blue:#5aa7e0; --green:#7bc96f; --red:#e5544b; --purple:#c08cff;
+    --mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--txt);
+    font-family:var(--sans); line-height:1.65; font-size:16px}
+  .wrap{max-width:900px; margin:0 auto; padding:0 20px 80px}
+
+  header{border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#221b12,#0e0d0b);
+    padding:48px 20px 40px; text-align:center}
+  header .kicker{font-family:var(--mono); color:var(--java2); font-size:.8rem;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:14px}
+  header h1{margin:0 0 10px; font-size:2.1rem; color:var(--title); line-height:1.2}
+  header p{margin:0 auto; max-width:640px; color:var(--txt-dim)}
+  .deadline{display:inline-block; margin-top:18px; font-family:var(--mono);
+    font-size:.85rem; color:var(--java2);
+    background:rgba(231,111,0,.12); border:1px solid rgba(231,111,0,.45);
+    padding:6px 14px; border-radius:6px}
+
+  nav.toc{background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:20px 24px; margin:32px 0}
+  nav.toc h2{margin:0 0 12px; font-size:.85rem; text-transform:uppercase;
+    letter-spacing:1px; color:var(--txt-dim); font-family:var(--mono)}
+  nav.toc ol{margin:0; padding-left:22px; columns:2; column-gap:32px}
+  nav.toc li{margin:5px 0}
+  nav.toc a{color:var(--java2); text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  @media(max-width:600px){nav.toc ol{columns:1}}
+
+  section{margin:52px 0; scroll-margin-top:20px}
+  h2.sec{font-size:1.5rem; color:var(--title); border-bottom:1px solid var(--line);
+    padding-bottom:10px; margin-bottom:20px}
+  h2.sec .num{font-family:var(--mono); color:var(--java); font-size:1.1rem; margin-right:10px}
+  h3{color:var(--java2); font-size:1.15rem; margin:28px 0 10px}
+  p{margin:12px 0}
+  strong{color:var(--title)}
+  a{color:var(--blue)}
+
+  pre{background:#0a0908; border:1px solid var(--line); border-radius:8px;
+    border-left:3px solid var(--java);
+    padding:16px 18px; overflow-x:auto; font-family:var(--mono);
+    font-size:.86rem; line-height:1.6; margin:16px 0}
+  pre.sh{border-left-color:var(--green)}
+  .cmt{color:#7d7568; font-style:italic}
+  .kw{color:var(--java2)}
+  .str{color:var(--green)}
+  .num{color:var(--purple)}
+  .typ{color:var(--blue)}
+  .fn{color:#e8c37a}
+  code{font-family:var(--mono); background:#0a0908; border:1px solid var(--line);
+    padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--java2)}
+  pre code{background:none;border:none;padding:0;color:inherit}
+
+  .box{border-radius:8px; padding:14px 18px; margin:18px 0; border:1px solid}
+  .box .tag{font-family:var(--mono); font-size:.75rem; text-transform:uppercase;
+    letter-spacing:1px; font-weight:700; display:block; margin-bottom:6px}
+  .info{background:rgba(90,167,224,.08); border-color:rgba(90,167,224,.35)}
+  .info .tag{color:var(--blue)}
+  .warn{background:rgba(245,166,35,.09); border-color:rgba(245,166,35,.4)}
+  .warn .tag{color:var(--java2)}
+  .danger{background:rgba(229,84,75,.09); border-color:rgba(229,84,75,.4)}
+  .danger .tag{color:var(--red)}
+  .win{background:rgba(123,201,111,.09); border-color:rgba(123,201,111,.4)}
+  .win .tag{color:var(--green)}
+
+  table.gl{width:100%; border-collapse:collapse; margin:16px 0; font-size:.92rem}
+  table.gl th{text-align:left; color:var(--txt-dim); font-family:var(--mono);
+    font-size:.78rem; text-transform:uppercase; letter-spacing:1px;
+    border-bottom:2px solid var(--line); padding:8px 12px}
+  table.gl td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  table.gl td:first-child{font-family:var(--mono); color:var(--purple); white-space:nowrap}
+
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+  .out{background:#05130a; border:1px solid rgba(123,201,111,.35); border-radius:8px;
+    padding:12px 16px; font-family:var(--mono); font-size:.84rem; color:#bfe6b3; margin:12px 0}
+  .out b{color:var(--green); display:block; font-size:.72rem; letter-spacing:1px;
+    text-transform:uppercase; margin-bottom:6px}
+
+  footer{border-top:1px solid var(--line); margin-top:60px; padding-top:24px;
+    color:var(--txt-dim); font-size:.85rem; text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">// JavaUrgence — révision express</div>
+  <h1>Java, les bases en accéléré ☕</h1>
+  <p>Saisie clavier, affichage, boucles et objets. L'essentiel, dans l'ordre, avec chaque bout de code expliqué et un programme complet à la fin.</p>
+  <div class="deadline">⏱ objectif : opérationnel avant 8h30</div>
+</header>
+
+<div class="wrap">
+
+  <div class="box info">
+    <span class="tag">Comment lire cette page</span>
+    Chaque section = une brique. Lis, recopie le code, teste. À la fin (§8) tu as <strong>un seul programme qui combine tout</strong> — c'est probablement ce dont tu as besoin pour ton exercice. La compilation est expliquée au §9.
+  </div>
+
+  <nav class="toc">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#s1">Le squelette d'un programme</a></li>
+      <li><a href="#s2">Afficher à l'écran</a></li>
+      <li><a href="#s3">Variables &amp; types</a></li>
+      <li><a href="#s4">Saisie au clavier (Scanner)</a></li>
+      <li><a href="#s5">Les conditions (if / else)</a></li>
+      <li><a href="#s6">Les boucles (for / while)</a></li>
+      <li><a href="#s7">Les objets (classes / structures)</a></li>
+      <li><a href="#s8">Le programme complet</a></li>
+      <li><a href="#s9">Compiler &amp; exécuter</a></li>
+      <li><a href="#s10">Erreurs fréquentes</a></li>
+    </ol>
+  </nav>
+
+  <!-- S1 -->
+  <section id="s1">
+    <h2 class="sec"><span class="num">01</span>Le squelette d'un programme</h2>
+    <p>En Java, <strong>tout vit dans une classe</strong>, et le programme démarre toujours par une méthode spéciale appelée <code>main</code>. Voici le minimum qui tourne :</p>
+<pre><span class="kw">public class</span> <span class="typ">Programme</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) {
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour !"</span>);
+    }
+}</pre>
+    <div class="box warn">
+      <span class="tag">Règle qui fait rater 50 % des débutants</span>
+      Le <strong>fichier doit s'appeler exactement comme la classe <code>public</code></strong> + <code>.java</code>. Ici : la classe est <code>Programme</code> → le fichier <strong>doit</strong> être <code>Programme.java</code>. Sinon ça ne compile pas.
+    </div>
+    <p>À retenir mot à mot (tu le réécriras à chaque fois) :</p>
+    <ul>
+      <li><code>public class Nom</code> → tu déclares ta classe.</li>
+      <li><code>public static void main(String[] args)</code> → le <strong>point d'entrée</strong>, là où l'exécution commence.</li>
+      <li>Chaque instruction se termine par un <strong><code>;</code></strong> (point-virgule).</li>
+      <li>Les blocs sont délimités par des <strong><code>{ }</code></strong>.</li>
+    </ul>
+  </section>
+
+  <!-- S2 -->
+  <section id="s2">
+    <h2 class="sec"><span class="num">02</span>Afficher à l'écran</h2>
+    <div class="two">
+      <div>
+<pre><span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Ligne 1"</span>); <span class="cmt">// va à la ligne</span>
+<span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"a"</span>);      <span class="cmt">// reste sur la ligne</span>
+<span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"b"</span>);
+<span class="typ">System</span>.out.<span class="fn">println</span>();       <span class="cmt">// ligne vide</span></pre>
+      </div>
+      <div class="out"><b>Sortie</b>Ligne 1<br>ab</div>
+    </div>
+    <p>Pour <strong>coller du texte et des valeurs</strong>, on utilise le <code>+</code> (concaténation) :</p>
+<pre><span class="kw">int</span> age = <span class="num">25</span>;
+<span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Tu as "</span> + age + <span class="str">" ans"</span>);  <span class="cmt">// Tu as 25 ans</span></pre>
+    <div class="box info">
+      <span class="tag">Différence à connaître</span>
+      <code>println</code> = « print line » → affiche <strong>et saute une ligne</strong>. <code>print</code> → affiche <strong>sans</strong> sauter. C'est tout.
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section id="s3">
+    <h2 class="sec"><span class="num">03</span>Variables &amp; types</h2>
+    <p>Une variable = une boîte étiquetée qui garde une valeur. En Java tu <strong>annonces le type</strong> de la boîte :</p>
+<pre><span class="kw">int</span> nombre   = <span class="num">10</span>;          <span class="cmt">// entier</span>
+<span class="kw">double</span> prix  = <span class="num">9.99</span>;        <span class="cmt">// décimal (virgule flottante)</span>
+<span class="kw">boolean</span> ok   = <span class="kw">true</span>;        <span class="cmt">// vrai / faux</span>
+<span class="kw">char</span> lettre  = <span class="str">'A'</span>;         <span class="cmt">// UN caractère (guillemets simples)</span>
+<span class="typ">String</span> nom   = <span class="str">"Sergio"</span>;    <span class="cmt">// texte (guillemets doubles)</span></pre>
+    <table class="gl">
+      <tr><th>Type</th><th>Sert à</th><th>Exemple</th></tr>
+      <tr><td>int</td><td>nombres entiers</td><td><code>0, 42, -7</code></td></tr>
+      <tr><td>double</td><td>nombres à virgule</td><td><code>3.14, 9.99</code></td></tr>
+      <tr><td>boolean</td><td>oui / non</td><td><code>true, false</code></td></tr>
+      <tr><td>char</td><td>un seul caractère</td><td><code>'A', '?'</code></td></tr>
+      <tr><td>String</td><td>du texte</td><td><code>"bonjour"</code></td></tr>
+    </table>
+    <div class="box warn">
+      <span class="tag">Piège classique</span>
+      <code>String</code> et <code>char</code> ne sont <strong>pas</strong> pareils. Texte = <code>"</code>guillemets doubles<code>"</code>. Un seul caractère = <code>'</code>guillemets simples<code>'</code>.
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section id="s4">
+    <h2 class="sec"><span class="num">04</span>Saisie au clavier (Scanner)</h2>
+    <p>Pour lire ce que l'utilisateur tape, Java utilise l'objet <code>Scanner</code>. Trois étapes :</p>
+<pre><span class="kw">import</span> java.util.Scanner;   <span class="cmt">// 1) tout en haut du fichier</span>
+
+<span class="kw">public class</span> <span class="typ">Saisie</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) {
+
+        <span class="typ">Scanner</span> sc = <span class="kw">new</span> <span class="typ">Scanner</span>(<span class="typ">System</span>.in);  <span class="cmt">// 2) on crée le lecteur</span>
+
+        <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Ton prénom : "</span>);
+        <span class="typ">String</span> prenom = sc.<span class="fn">nextLine</span>();          <span class="cmt">// 3) on lit du texte</span>
+
+        <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Ton âge : "</span>);
+        <span class="kw">int</span> age = sc.<span class="fn">nextInt</span>();               <span class="cmt">// on lit un entier</span>
+
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Salut "</span> + prenom + <span class="str">", "</span> + age + <span class="str">" ans !"</span>);
+
+        sc.<span class="fn">close</span>();   <span class="cmt">// on ferme à la fin</span>
+    }
+}</pre>
+    <table class="gl">
+      <tr><th>Méthode</th><th>Lit…</th></tr>
+      <tr><td>sc.nextLine()</td><td>une ligne de texte (String)</td></tr>
+      <tr><td>sc.nextInt()</td><td>un entier (int)</td></tr>
+      <tr><td>sc.nextDouble()</td><td>un décimal (double)</td></tr>
+      <tr><td>sc.next()</td><td>un seul mot (sans espace)</td></tr>
+    </table>
+    <div class="box danger">
+      <span class="tag">LE piège d'examen à connaître absolument</span>
+      Si tu fais <code>nextInt()</code> <strong>puis</strong> <code>nextLine()</code>, le second te renvoie une ligne vide : <code>nextInt()</code> laisse le « retour-chariot » derrière lui. La parade simple : ajoute un <code>sc.nextLine();</code> « poubelle » juste après le <code>nextInt()</code> pour l'avaler, ou lis tout avec <code>nextLine()</code> puis convertis avec <code>Integer.parseInt(...)</code>.
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section id="s5">
+    <h2 class="sec"><span class="num">05</span>Les conditions (if / else)</h2>
+    <p>Faire un choix selon une valeur :</p>
+<pre><span class="kw">int</span> note = <span class="num">12</span>;
+
+<span class="kw">if</span> (note &gt;= <span class="num">10</span>) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Admis"</span>);
+} <span class="kw">else if</span> (note &gt;= <span class="num">8</span>) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Rattrapage"</span>);
+} <span class="kw">else</span> {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Recalé"</span>);
+}</pre>
+    <table class="gl">
+      <tr><th>Opérateur</th><th>Signifie</th></tr>
+      <tr><td>==</td><td>égal à (attention : deux <code>=</code> !)</td></tr>
+      <tr><td>!=</td><td>différent de</td></tr>
+      <tr><td>&gt;  &gt;=</td><td>supérieur / supérieur ou égal</td></tr>
+      <tr><td>&lt;  &lt;=</td><td>inférieur / inférieur ou égal</td></tr>
+      <tr><td>&amp;&amp;</td><td>ET (les deux conditions vraies)</td></tr>
+      <tr><td>||</td><td>OU (au moins une vraie)</td></tr>
+    </table>
+    <div class="box warn">
+      <span class="tag">Comparer du texte</span>
+      Pour comparer deux <code>String</code>, on n'utilise <strong>pas</strong> <code>==</code> mais <code>.equals()</code> :<br>
+      <code>if (prenom.equals("Sergio")) { ... }</code>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section id="s6">
+    <h2 class="sec"><span class="num">06</span>Les boucles (répéter)</h2>
+
+    <h3>Boucle <code>for</code> — quand tu sais combien de fois</h3>
+<pre><span class="cmt">// affiche 1, 2, 3, 4, 5</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">5</span>; i++) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Tour n° "</span> + i);
+}</pre>
+    <p>Les 3 parties du <code>for</code> : <strong>départ</strong> (<code>int i = 1</code>) ; <strong>condition</strong> pour continuer (<code>i &lt;= 5</code>) ; <strong>pas</strong> à chaque tour (<code>i++</code>, càd « i = i + 1 »).</p>
+
+    <h3>Boucle <code>while</code> — tant qu'une condition est vraie</h3>
+<pre><span class="kw">int</span> compteur = <span class="num">0</span>;
+<span class="kw">while</span> (compteur &lt; <span class="num">3</span>) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"encore"</span>);
+    compteur++;          <span class="cmt">// SANS ça → boucle infinie !</span>
+}</pre>
+
+    <h3>Boucle <code>do…while</code> — s'exécute au moins une fois</h3>
+<pre><span class="typ">Scanner</span> sc = <span class="kw">new</span> <span class="typ">Scanner</span>(<span class="typ">System</span>.in);
+<span class="kw">int</span> n;
+<span class="kw">do</span> {
+    <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Entre un nombre positif : "</span>);
+    n = sc.<span class="fn">nextInt</span>();
+} <span class="kw">while</span> (n &lt;= <span class="num">0</span>);   <span class="cmt">// redemande tant que ≤ 0</span></pre>
+
+    <div class="box info">
+      <span class="tag">Comment choisir</span>
+      <strong>Nombre de tours connu</strong> (de 1 à 10, parcourir un tableau) → <code>for</code>. <strong>Répéter tant qu'une condition tient</strong> (jusqu'à une bonne saisie) → <code>while</code> / <code>do…while</code>.
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section id="s7">
+    <h2 class="sec"><span class="num">07</span>Les objets (classes = « structures »)</h2>
+    <p>En Java, une <strong>« structure »</strong> qui regroupe plusieurs données, ça s'appelle une <strong>classe</strong>. Une classe décrit :</p>
+    <ul>
+      <li>des <strong>attributs</strong> (les données : nom, âge…) ;</li>
+      <li>un <strong>constructeur</strong> (la recette pour fabriquer un objet) ;</li>
+      <li>des <strong>méthodes</strong> (ce que l'objet sait faire).</li>
+    </ul>
+    <p>Exemple : une classe <code>Etudiant</code>.</p>
+<pre><span class="kw">class</span> <span class="typ">Etudiant</span> {
+    <span class="cmt">// --- attributs (la "structure") ---</span>
+    <span class="typ">String</span> nom;
+    <span class="kw">int</span> age;
+
+    <span class="cmt">// --- constructeur : sert à créer un Etudiant ---</span>
+    <span class="typ">Etudiant</span>(<span class="typ">String</span> nom, <span class="kw">int</span> age) {
+        <span class="kw">this</span>.nom = nom;    <span class="cmt">// "this.nom" = l'attribut de l'objet</span>
+        <span class="kw">this</span>.age = age;
+    }
+
+    <span class="cmt">// --- une méthode : un comportement ---</span>
+    <span class="kw">void</span> <span class="fn">sePresenter</span>() {
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Je suis "</span> + nom + <span class="str">", "</span> + age + <span class="str">" ans."</span>);
+    }
+}</pre>
+    <p>On <strong>crée</strong> et <strong>utilise</strong> des objets avec <code>new</code> et le point <code>.</code> :</p>
+<pre><span class="typ">Etudiant</span> e1 = <span class="kw">new</span> <span class="typ">Etudiant</span>(<span class="str">"Sergio"</span>, <span class="num">25</span>);
+<span class="typ">Etudiant</span> e2 = <span class="kw">new</span> <span class="typ">Etudiant</span>(<span class="str">"Léa"</span>, <span class="num">22</span>);
+
+e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis Sergio, 25 ans.</span>
+<span class="typ">System</span>.out.<span class="fn">println</span>(e2.nom);  <span class="cmt">// accès direct à un attribut → Léa</span></pre>
+    <div class="box info">
+      <span class="tag">L'image mentale</span>
+      La <strong>classe</strong> = le plan / le moule (« un Etudiant a un nom et un âge »). L'<strong>objet</strong> = un exemplaire fabriqué avec ce moule (« Sergio, 25 ans »). <code>new</code> = « fabrique-m'en un ». Java n'a pas de <code>struct</code> comme en C : ici, la classe joue ce rôle.
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section id="s8">
+    <h2 class="sec"><span class="num">08</span>Le programme complet (tout ensemble)</h2>
+    <p>Ce programme <strong>combine tes 4 notions</strong> : il demande combien d'étudiants saisir, lit chacun au clavier (<em>saisie</em>), les range dans un tableau d'objets (<em>objets</em>), les affiche avec une boucle (<em>boucle + affichage</em>), et calcule l'âge moyen. Copie-le tel quel dans un fichier <code>Ecole.java</code>.</p>
+<pre><span class="kw">import</span> java.util.Scanner;
+
+<span class="cmt">// ---- la "structure" étudiant ----</span>
+<span class="kw">class</span> <span class="typ">Etudiant</span> {
+    <span class="typ">String</span> nom;
+    <span class="kw">int</span> age;
+    <span class="typ">Etudiant</span>(<span class="typ">String</span> nom, <span class="kw">int</span> age) {
+        <span class="kw">this</span>.nom = nom;
+        <span class="kw">this</span>.age = age;
+    }
+    <span class="kw">void</span> <span class="fn">afficher</span>() {
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">" - "</span> + nom + <span class="str">" ("</span> + age + <span class="str">" ans)"</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="typ">Ecole</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) {
+        <span class="typ">Scanner</span> sc = <span class="kw">new</span> <span class="typ">Scanner</span>(<span class="typ">System</span>.in);
+
+        <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Combien d'étudiants ? "</span>);
+        <span class="kw">int</span> n = sc.<span class="fn">nextInt</span>();
+        sc.<span class="fn">nextLine</span>();   <span class="cmt">// avale le retour-chariot (le piège du §4 !)</span>
+
+        <span class="typ">Etudiant</span>[] liste = <span class="kw">new</span> <span class="typ">Etudiant</span>[n];   <span class="cmt">// tableau d'objets</span>
+
+        <span class="cmt">// --- SAISIE : on remplit le tableau avec une boucle ---</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+            <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Nom de l'étudiant "</span> + (i + <span class="num">1</span>) + <span class="str">" : "</span>);
+            <span class="typ">String</span> nom = sc.<span class="fn">nextLine</span>();
+
+            <span class="typ">System</span>.out.<span class="fn">print</span>(<span class="str">"Son âge : "</span>);
+            <span class="kw">int</span> age = sc.<span class="fn">nextInt</span>();
+            sc.<span class="fn">nextLine</span>();
+
+            liste[i] = <span class="kw">new</span> <span class="typ">Etudiant</span>(nom, age);   <span class="cmt">// on crée l'objet</span>
+        }
+
+        <span class="cmt">// --- AFFICHAGE + calcul de la moyenne ---</span>
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"\n=== Liste des étudiants ==="</span>);
+        <span class="kw">int</span> total = <span class="num">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+            liste[i].<span class="fn">afficher</span>();
+            total = total + liste[i].age;
+        }
+
+        <span class="kw">double</span> moyenne = (<span class="kw">double</span>) total / n;
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Âge moyen : "</span> + moyenne);
+
+        sc.<span class="fn">close</span>();
+    }
+}</pre>
+    <div class="out"><b>Exemple d'exécution</b>Combien d'étudiants ? 2<br>Nom de l'étudiant 1 : Sergio<br>Son âge : 25<br>Nom de l'étudiant 2 : Léa<br>Son âge : 22<br><br>=== Liste des étudiants ===<br>&nbsp;- Sergio (25 ans)<br>&nbsp;- Léa (22 ans)<br>Âge moyen : 23.5</div>
+    <div class="box win">
+      <span class="tag">Tu as tout</span>
+      Ce seul fichier utilise : <strong>Scanner</strong> (saisie), <strong>System.out.println</strong> (affichage), <strong>for</strong> (boucles) et une <strong>classe Etudiant</strong> (objets/structure). Adapte les noms d'attributs (nom → produit, age → prix…) et tu couvres la plupart des sujets d'exam.
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section id="s9">
+    <h2 class="sec"><span class="num">09</span>Compiler &amp; exécuter</h2>
+    <p>Deux commandes dans le terminal, dans le dossier où est ton fichier :</p>
+<pre class="sh"><span class="cmt"># 1) compiler : transforme Ecole.java en Ecole.class</span>
+javac Ecole.java
+
+<span class="cmt"># 2) exécuter : on lance SANS le .class, juste le nom de la classe</span>
+java Ecole</pre>
+    <div class="box warn">
+      <span class="tag">3 erreurs de compilation classiques</span>
+      • Le <strong>nom du fichier ≠ nom de la classe public</strong> → renomme.<br>
+      • Un <strong><code>;</code> oublié</strong> en fin de ligne, ou une <strong><code>}</code></strong> manquante.<br>
+      • À l'exécution tu tapes <code>java Ecole</code>, <strong>pas</strong> <code>java Ecole.class</code> ni <code>java Ecole.java</code>.
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section id="s10">
+    <h2 class="sec"><span class="num">10</span>Erreurs fréquentes (à relire avant de rendre)</h2>
+    <table class="gl">
+      <tr><th>Symptôme</th><th>Cause / correctif</th></tr>
+      <tr><td>class ... is public, should be declared in a file named ...</td><td>Renomme le fichier comme la classe <code>public</code>.</td></tr>
+      <tr><td>nextLine() renvoie du vide</td><td>Le retour-chariot laissé par <code>nextInt()</code>. Ajoute un <code>sc.nextLine();</code> juste après (§4).</td></tr>
+      <tr><td>Deux String « égales » mais <code>==</code> dit faux</td><td>Compare avec <code>.equals()</code>, pas <code>==</code> (§5).</td></tr>
+      <tr><td>La boucle ne s'arrête jamais</td><td>Tu as oublié de faire évoluer le compteur (<code>i++</code>, <code>compteur++</code>).</td></tr>
+      <tr><td>cannot find symbol : Scanner</td><td>Il manque <code>import java.util.Scanner;</code> tout en haut.</td></tr>
+      <tr><td>Division d'entiers donne un résultat faux (23 au lieu de 23.5)</td><td>Force le décimal : <code>(double) total / n</code>.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    JavaUrgence · révision express · Java 21 · fichier local <code>lecon-java-bases.html</code><br>
+    Le squelette à recopier de tête : <code>public class X { public static void main(String[] args) { ... } }</code>
+  </footer>
+
+</div>
+</body>
+</html>
