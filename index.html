@@ -108,7 +108,7 @@
 
   <div class="box info">
     <span class="tag">Comment lire cette page</span>
-    Chaque section = une brique. Lis, recopie le code, teste. À la fin (§8) tu as <strong>un seul programme qui combine tout</strong> — c'est probablement ce dont tu as besoin pour ton exercice. La compilation est expliquée au §9.
+    Chaque section = une brique. Lis, recopie le code, teste. À la fin (§10) tu as <strong>un seul programme qui combine tout</strong> — c'est probablement ce dont tu as besoin pour ton exercice. La compilation est expliquée au §12.
   </div>
 
   <nav class="toc">
@@ -121,6 +121,7 @@
       <li><a href="#s5">Les conditions (if / else)</a></li>
       <li><a href="#s6">Les boucles (for / while)</a></li>
       <li><a href="#sfonc">Les fonctions (méthodes)</a></li>
+      <li><a href="#stab">Les tableaux (1D, 2D, 3D)</a></li>
       <li><a href="#s7">Les objets (classes / structures)</a></li>
       <li><a href="#s8">Le programme complet</a></li>
       <li><a href="#sfichier">Lire &amp; écrire un fichier</a></li>
@@ -345,13 +346,103 @@
 
     <div class="box info">
       <span class="tag">Lien avec les objets</span>
-      Les méthodes d'un objet (comme <code>sePresenter()</code> au §8) sont aussi des fonctions — mais <strong>sans <code>static</code></strong>, car elles agissent sur un objet précis (<code>e1.sePresenter()</code>).
+      Les méthodes d'un objet (comme <code>sePresenter()</code> au §9) sont aussi des fonctions — mais <strong>sans <code>static</code></strong>, car elles agissent sur un objet précis (<code>e1.sePresenter()</code>).
     </div>
   </section>
 
   <!-- S8 -->
+  <!-- Stab : les tableaux -->
+  <section id="stab">
+    <h2 class="sec"><span class="num">08</span>Les tableaux (1D, 2D, 3D)</h2>
+    <p>Un <strong>tableau</strong> range plusieurs valeurs <strong>du même type</strong> dans des cases numérotées. Le numéro d'une case = son <strong>index</strong>, et il commence à <strong>0</strong>. Tu en as déjà croisé un : le <code>String[] args</code> de <code>main</code> !</p>
+
+    <h3>Tableau 1D — une ligne de cases</h3>
+<pre><span class="cmt">// méthode 1 : un tableau vide de 5 cases (toutes à 0 au départ)</span>
+<span class="kw">int</span>[] notes = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">5</span>];
+notes[<span class="num">0</span>] = <span class="num">12</span>;      <span class="cmt">// première case (index 0)</span>
+notes[<span class="num">1</span>] = <span class="num">15</span>;
+
+<span class="cmt">// méthode 2 : on donne les valeurs directement</span>
+<span class="kw">int</span>[] autres = {<span class="num">12</span>, <span class="num">15</span>, <span class="num">9</span>, <span class="num">18</span>, <span class="num">7</span>};
+
+<span class="typ">System</span>.out.<span class="fn">println</span>(autres[<span class="num">3</span>]);       <span class="cmt">// 18</span>
+<span class="typ">System</span>.out.<span class="fn">println</span>(autres.length);   <span class="cmt">// 5 -> le nombre de cases</span></pre>
+
+    <p><strong>Parcourir</strong> un tableau, c'est le travail d'une boucle <code>for</code> :</p>
+<pre><span class="cmt">// boucle classique (avec l'index i)</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; autres.length; i++) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Case "</span> + i + <span class="str">" = "</span> + autres[i]);
+}
+
+<span class="cmt">// boucle "for-each" : plus simple si tu n'as pas besoin de l'index</span>
+<span class="kw">for</span> (<span class="kw">int</span> n : autres) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(n);
+}</pre>
+    <div class="box info">
+      <span class="tag">L'index commence à 0</span>
+      Un tableau de taille <code>n</code> a ses cases numérotées de <strong>0 à n-1</strong>. Un tableau de 5 cases → index <code>0,1,2,3,4</code>. <code>tableau.length</code> te donne toujours la taille.
+    </div>
+
+    <h3>Tableau 2D — une grille (lignes × colonnes)</h3>
+    <p>Un tableau 2D, c'est un <strong>tableau de tableaux</strong> : imagine une feuille de tableur avec des lignes et des colonnes.</p>
+<pre><span class="cmt">// 3 lignes, 4 colonnes (toutes les cases à 0)</span>
+<span class="kw">int</span>[][] grille = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">3</span>][<span class="num">4</span>];
+grille[<span class="num">0</span>][<span class="num">0</span>] = <span class="num">1</span>;    <span class="cmt">// ligne 0, colonne 0</span>
+grille[<span class="num">2</span>][<span class="num">3</span>] = <span class="num">9</span>;    <span class="cmt">// dernière case</span>
+
+<span class="cmt">// ou directement avec les valeurs :</span>
+<span class="kw">int</span>[][] m = {
+    {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>},
+    {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}
+};   <span class="cmt">// 2 lignes, 3 colonnes</span>
+<span class="typ">System</span>.out.<span class="fn">println</span>(m[<span class="num">1</span>][<span class="num">2</span>]);   <span class="cmt">// 6  (2e ligne, 3e colonne)</span></pre>
+    <p>On le parcourt avec <strong>deux boucles imbriquées</strong> (une pour les lignes, une pour les colonnes) :</p>
+<pre><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; m.length; i++) {          <span class="cmt">// lignes</span>
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; m[i].length; j++) {   <span class="cmt">// colonnes</span>
+        <span class="typ">System</span>.out.<span class="fn">print</span>(m[i][j] + <span class="str">" "</span>);
+    }
+    <span class="typ">System</span>.out.<span class="fn">println</span>();   <span class="cmt">// saut de ligne après chaque rangée</span>
+}</pre>
+    <div class="box info">
+      <span class="tag">Les deux longueurs</span>
+      <code>m.length</code> = nombre de <strong>lignes</strong>. <code>m[i].length</code> = nombre de <strong>colonnes</strong> de la ligne <code>i</code>.
+    </div>
+
+    <h3>Tableau 3D — un volume (un « cube »)</h3>
+    <p>Un tableau 3D est un <strong>empilement de grilles 2D</strong>. Rarement utilisé, mais le principe est identique avec un index de plus.</p>
+<pre><span class="cmt">// 2 x 3 x 4 = 24 cases (profondeur x lignes x colonnes)</span>
+<span class="kw">int</span>[][][] cube = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">2</span>][<span class="num">3</span>][<span class="num">4</span>];
+cube[<span class="num">0</span>][<span class="num">1</span>][<span class="num">2</span>] = <span class="num">7</span>;
+cube[<span class="num">1</span>][<span class="num">2</span>][<span class="num">3</span>] = <span class="num">42</span>;
+
+<span class="cmt">// parcours : trois boucles imbriquées</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; cube.length; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; cube[i].length; j++) {
+        <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">0</span>; k &lt; cube[i][j].length; k++) {
+            <span class="typ">System</span>.out.<span class="fn">println</span>(cube[i][j][k]);
+        }
+    }
+}</pre>
+
+    <div class="box win">
+      <span class="tag">L'image à retenir</span>
+      <strong>1D</strong> = une ligne de cases (une liste). <strong>2D</strong> = une grille (lignes × colonnes, comme un tableur). <strong>3D</strong> = une pile de grilles (un cube). À chaque dimension : une paire de crochets <code>[]</code> en plus, et une boucle imbriquée en plus.
+    </div>
+
+    <div class="box danger">
+      <span class="tag">L'erreur qui plante : hors des bornes</span>
+      Accéder à un index qui n'existe pas → <code>ArrayIndexOutOfBoundsException</code>. Sur un tableau de 5 cases, <code>notes[5]</code> plante (les index vont de 0 à 4). Boucle toujours avec <code>i &lt; tableau.length</code>.
+    </div>
+
+    <div class="box warn">
+      <span class="tag">Taille fixe</span>
+      Un tableau a une taille <strong>définitive</strong> dès sa création : impossible de l'agrandir. Pour une liste qui grandit toute seule, on utilise une <code>ArrayList</code> (autre notion). On peut aussi faire un tableau <strong>d'objets</strong> : <code>Etudiant[]</code>, exactement comme au §10.
+    </div>
+  </section>
+
+  <!-- S9 -->
   <section id="s7">
-    <h2 class="sec"><span class="num">08</span>Les objets (classes = « structures »)</h2>
+    <h2 class="sec"><span class="num">09</span>Les objets (classes = « structures »)</h2>
     <p>En Java, une <strong>« structure »</strong> qui regroupe plusieurs données, ça s'appelle une <strong>classe</strong>. Une classe décrit :</p>
     <ul>
       <li>des <strong>attributs</strong> (les données : nom, âge…) ;</li>
@@ -389,7 +480,7 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
 
   <!-- S8 -->
   <section id="s8">
-    <h2 class="sec"><span class="num">09</span>Le programme complet (tout ensemble)</h2>
+    <h2 class="sec"><span class="num">10</span>Le programme complet (tout ensemble)</h2>
     <p>Ce programme <strong>combine tes 4 notions</strong> : il demande combien d'étudiants saisir, lit chacun au clavier (<em>saisie</em>), les range dans un tableau d'objets (<em>objets</em>), les affiche avec une boucle (<em>boucle + affichage</em>), et calcule l'âge moyen. Copie-le tel quel dans un fichier <code>Ecole.java</code>.</p>
 <pre><span class="kw">import</span> java.util.Scanner;
 
@@ -452,7 +543,7 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
   <!-- S9 -->
   <!-- Sfichier : lire / écrire un fichier -->
   <section id="sfichier">
-    <h2 class="sec"><span class="num">10</span>Lire &amp; écrire dans un fichier</h2>
+    <h2 class="sec"><span class="num">11</span>Lire &amp; écrire dans un fichier</h2>
     <p>Un programme oublie tout quand il se ferme. Pour <strong>garder des données</strong> (ou relire un fichier existant), on écrit/lit sur le <strong>disque</strong>. Java manipule surtout du <strong>texte</strong>.</p>
 
     <h3>Écrire dans un fichier — <code>FileWriter</code></h3>
@@ -512,7 +603,7 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
 <span class="typ">String</span>[] parts = ligne.<span class="fn">split</span>(<span class="str">";"</span>);   <span class="cmt">// ["Sergio", "25"]</span>
 <span class="typ">String</span> nom = parts[<span class="num">0</span>];
 <span class="kw">int</span> age = <span class="typ">Integer</span>.<span class="fn">parseInt</span>(parts[<span class="num">1</span>]);  <span class="cmt">// le texte "25" devient le nombre 25</span>
-<span class="typ">Etudiant</span> e = <span class="kw">new</span> <span class="typ">Etudiant</span>(nom, age);       <span class="cmt">// on recrée l'objet (voir §8)</span></pre>
+<span class="typ">Etudiant</span> e = <span class="kw">new</span> <span class="typ">Etudiant</span>(nom, age);       <span class="cmt">// on recrée l'objet (voir §9)</span></pre>
 
     <div class="box win">
       <span class="tag">Version courte (Java 11+)</span>
@@ -525,7 +616,7 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
 
   <!-- S11 -->
   <section id="s9">
-    <h2 class="sec"><span class="num">11</span>Compiler &amp; exécuter</h2>
+    <h2 class="sec"><span class="num">12</span>Compiler &amp; exécuter</h2>
     <p>Deux commandes dans le terminal, dans le dossier où est ton fichier :</p>
 <pre class="sh"><span class="cmt"># 1) compiler : transforme Ecole.java en Ecole.class</span>
 javac Ecole.java
@@ -542,7 +633,7 @@ java Ecole</pre>
 
   <!-- S10 -->
   <section id="s10">
-    <h2 class="sec"><span class="num">12</span>Erreurs fréquentes (à relire avant de rendre)</h2>
+    <h2 class="sec"><span class="num">13</span>Erreurs fréquentes (à relire avant de rendre)</h2>
     <table class="gl">
       <tr><th>Symptôme</th><th>Cause / correctif</th></tr>
       <tr><td>class ... is public, should be declared in a file named ...</td><td>Renomme le fichier comme la classe <code>public</code>.</td></tr>
