@@ -120,8 +120,10 @@
       <li><a href="#s4">Saisie au clavier (Scanner)</a></li>
       <li><a href="#s5">Les conditions (if / else)</a></li>
       <li><a href="#s6">Les boucles (for / while)</a></li>
+      <li><a href="#sfonc">Les fonctions (méthodes)</a></li>
       <li><a href="#s7">Les objets (classes / structures)</a></li>
       <li><a href="#s8">Le programme complet</a></li>
+      <li><a href="#sfichier">Lire &amp; écrire un fichier</a></li>
       <li><a href="#s9">Compiler &amp; exécuter</a></li>
       <li><a href="#s10">Erreurs fréquentes</a></li>
     </ol>
@@ -290,8 +292,66 @@
   </section>
 
   <!-- S7 -->
+  <!-- Sfonc : les fonctions -->
+  <section id="sfonc">
+    <h2 class="sec"><span class="num">07</span>Les fonctions (méthodes)</h2>
+    <p>En Java, une « fonction » s'appelle une <strong>méthode</strong>. C'est un <strong>bloc de code nommé</strong> qu'on peut appeler autant de fois qu'on veut — ça évite de recopier le même code partout.</p>
+
+    <h3>L'anatomie d'une méthode</h3>
+<pre><span class="kw">static</span> <span class="kw">int</span> <span class="fn">addition</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a + b;   <span class="cmt">// renvoie le résultat</span>
+}</pre>
+    <ul>
+      <li><code>static</code> → permet de l'appeler directement depuis <code>main</code> (voir l'avertissement plus bas).</li>
+      <li><code>int</code> → le <strong>type de la valeur renvoyée</strong> par <code>return</code>.</li>
+      <li><code>addition</code> → le <strong>nom</strong> que tu choisis.</li>
+      <li><code>(int a, int b)</code> → les <strong>paramètres</strong> : les valeurs qu'on lui donne en entrée.</li>
+      <li><code>return</code> → renvoie le résultat et arrête la méthode.</li>
+    </ul>
+
+    <h3>Une méthode qui ne renvoie rien : <code>void</code></h3>
+<pre><span class="kw">static</span> <span class="kw">void</span> <span class="fn">saluer</span>(<span class="typ">String</span> nom) {
+    <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour "</span> + nom + <span class="str">" !"</span>);
+}</pre>
+    <p><code>void</code> = « ne renvoie rien ». La méthode fait juste une action (ici, afficher).</p>
+
+    <h3>Les appeler depuis <code>main</code></h3>
+<pre><span class="kw">public class</span> <span class="typ">Demo</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) {
+        <span class="fn">saluer</span>(<span class="str">"Sergio"</span>);              <span class="cmt">// affiche : Bonjour Sergio !</span>
+        <span class="kw">int</span> r = <span class="fn">addition</span>(<span class="num">3</span>, <span class="num">5</span>);        <span class="cmt">// r vaut 8</span>
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"3 + 5 = "</span> + r);
+    }
+
+    <span class="kw">static</span> <span class="kw">void</span> <span class="fn">saluer</span>(<span class="typ">String</span> nom) {
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour "</span> + nom + <span class="str">" !"</span>);
+    }
+
+    <span class="kw">static</span> <span class="kw">int</span> <span class="fn">addition</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+        <span class="kw">return</span> a + b;
+    }
+}</pre>
+    <div class="out"><b>Sortie</b>Bonjour Sergio !<br>3 + 5 = 8</div>
+
+    <div class="box info">
+      <span class="tag">Paramètre vs argument</span>
+      Le <strong>paramètre</strong> = la variable dans la définition (<code>int a</code>). L'<strong>argument</strong> = la valeur réelle passée à l'appel (<code>3</code>). On dit « la méthode <em>reçoit</em> des arguments ».
+    </div>
+
+    <div class="box warn">
+      <span class="tag">Le mot-clé <code>static</code> (erreur ultra fréquente)</span>
+      Comme <code>main</code> est <code>static</code>, les méthodes qu'elle appelle dans la même classe doivent l'être aussi. Sinon : <code>non-static method ... cannot be referenced from a static context</code>. En résumé : dans un petit programme, mets <code>static</code> sur toutes tes méthodes utilitaires.
+    </div>
+
+    <div class="box info">
+      <span class="tag">Lien avec les objets</span>
+      Les méthodes d'un objet (comme <code>sePresenter()</code> au §8) sont aussi des fonctions — mais <strong>sans <code>static</code></strong>, car elles agissent sur un objet précis (<code>e1.sePresenter()</code>).
+    </div>
+  </section>
+
+  <!-- S8 -->
   <section id="s7">
-    <h2 class="sec"><span class="num">07</span>Les objets (classes = « structures »)</h2>
+    <h2 class="sec"><span class="num">08</span>Les objets (classes = « structures »)</h2>
     <p>En Java, une <strong>« structure »</strong> qui regroupe plusieurs données, ça s'appelle une <strong>classe</strong>. Une classe décrit :</p>
     <ul>
       <li>des <strong>attributs</strong> (les données : nom, âge…) ;</li>
@@ -329,7 +389,7 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
 
   <!-- S8 -->
   <section id="s8">
-    <h2 class="sec"><span class="num">08</span>Le programme complet (tout ensemble)</h2>
+    <h2 class="sec"><span class="num">09</span>Le programme complet (tout ensemble)</h2>
     <p>Ce programme <strong>combine tes 4 notions</strong> : il demande combien d'étudiants saisir, lit chacun au clavier (<em>saisie</em>), les range dans un tableau d'objets (<em>objets</em>), les affiche avec une boucle (<em>boucle + affichage</em>), et calcule l'âge moyen. Copie-le tel quel dans un fichier <code>Ecole.java</code>.</p>
 <pre><span class="kw">import</span> java.util.Scanner;
 
@@ -390,8 +450,82 @@ e1.<span class="fn">sePresenter</span>();          <span class="cmt">// Je suis 
   </section>
 
   <!-- S9 -->
+  <!-- Sfichier : lire / écrire un fichier -->
+  <section id="sfichier">
+    <h2 class="sec"><span class="num">10</span>Lire &amp; écrire dans un fichier</h2>
+    <p>Un programme oublie tout quand il se ferme. Pour <strong>garder des données</strong> (ou relire un fichier existant), on écrit/lit sur le <strong>disque</strong>. Java manipule surtout du <strong>texte</strong>.</p>
+
+    <h3>Écrire dans un fichier — <code>FileWriter</code></h3>
+<pre><span class="kw">import</span> java.io.FileWriter;
+<span class="kw">import</span> java.io.IOException;
+
+<span class="kw">public class</span> <span class="typ">Ecriture</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) <span class="kw">throws</span> <span class="typ">IOException</span> {
+
+        <span class="typ">FileWriter</span> f = <span class="kw">new</span> <span class="typ">FileWriter</span>(<span class="str">"donnees.txt"</span>);  <span class="cmt">// crée (ou écrase) le fichier</span>
+        f.<span class="fn">write</span>(<span class="str">"Sergio;25\n"</span>);   <span class="cmt">// \n = saut de ligne</span>
+        f.<span class="fn">write</span>(<span class="str">"Lea;22\n"</span>);
+        f.<span class="fn">close</span>();                <span class="cmt">// OBLIGATOIRE, sinon le fichier peut rester vide</span>
+
+        <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Fichier écrit !"</span>);
+    }
+}</pre>
+
+    <h3>Lire un fichier — <code>Scanner</code> + <code>File</code></h3>
+<pre><span class="kw">import</span> java.io.File;
+<span class="kw">import</span> java.io.FileNotFoundException;
+<span class="kw">import</span> java.util.Scanner;
+
+<span class="kw">public class</span> <span class="typ">Lecture</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="typ">String</span>[] args) <span class="kw">throws</span> <span class="typ">FileNotFoundException</span> {
+
+        <span class="typ">Scanner</span> lecteur = <span class="kw">new</span> <span class="typ">Scanner</span>(<span class="kw">new</span> <span class="typ">File</span>(<span class="str">"donnees.txt"</span>));
+
+        <span class="kw">while</span> (lecteur.<span class="fn">hasNextLine</span>()) {      <span class="cmt">// tant qu'il reste une ligne</span>
+            <span class="typ">String</span> ligne = lecteur.<span class="fn">nextLine</span>();
+            <span class="typ">System</span>.out.<span class="fn">println</span>(<span class="str">"Lu : "</span> + ligne);
+        }
+        lecteur.<span class="fn">close</span>();
+    }
+}</pre>
+    <div class="out"><b>Sortie</b>Lu : Sergio;25<br>Lu : Lea;22</div>
+
+    <div class="box danger">
+      <span class="tag">Le <code>throws IOException</code> — pourquoi ?</span>
+      Un fichier peut échouer (introuvable, disque plein, pas les droits…). Java <strong>t'oblige</strong> à prévoir le coup. Le plus simple pour un exercice : ajouter <code>throws IOException</code> (ou <code>throws FileNotFoundException</code>) après <code>main</code>, comme ci-dessus. Alternative plus propre : entourer d'un <code>try { … } catch (IOException e) { … }</code>.
+    </div>
+
+    <div class="box warn">
+      <span class="tag">Écraser ou ajouter à la suite ?</span>
+      <code>new FileWriter("donnees.txt")</code> → <strong>efface</strong> et réécrit tout.<br>
+      <code>new FileWriter("donnees.txt", true)</code> → <strong>ajoute à la fin</strong> (le <code>true</code> = mode « append »).
+    </div>
+
+    <div class="box info">
+      <span class="tag">Où est créé le fichier ?</span>
+      Par défaut, dans le dossier d'où tu lances <code>java</code>. Tu peux donner un chemin complet : <code>new FileWriter("/home/hsergio/donnees.txt")</code>.
+    </div>
+
+    <h3>En pratique : (re)lire des objets</h3>
+    <p>On sauvegarde souvent une donnée par ligne, champs séparés par un <code>;</code>. Pour les relire, on <strong>découpe</strong> la ligne avec <code>split</code> :</p>
+<pre><span class="typ">String</span> ligne = <span class="str">"Sergio;25"</span>;
+<span class="typ">String</span>[] parts = ligne.<span class="fn">split</span>(<span class="str">";"</span>);   <span class="cmt">// ["Sergio", "25"]</span>
+<span class="typ">String</span> nom = parts[<span class="num">0</span>];
+<span class="kw">int</span> age = <span class="typ">Integer</span>.<span class="fn">parseInt</span>(parts[<span class="num">1</span>]);  <span class="cmt">// le texte "25" devient le nombre 25</span>
+<span class="typ">Etudiant</span> e = <span class="kw">new</span> <span class="typ">Etudiant</span>(nom, age);       <span class="cmt">// on recrée l'objet (voir §8)</span></pre>
+
+    <div class="box win">
+      <span class="tag">Version courte (Java 11+)</span>
+      Plus moderne, tout tient en 2 lignes :<br>
+      <code>Files.writeString(Path.of("donnees.txt"), "du texte\n");</code><br>
+      <code>String tout = Files.readString(Path.of("donnees.txt"));</code><br>
+      (avec <code>import java.nio.file.Files;</code> et <code>import java.nio.file.Path;</code>). Pour lire ligne par ligne, <code>Files.readAllLines(...)</code> renvoie une <code>List&lt;String&gt;</code>.
+    </div>
+  </section>
+
+  <!-- S11 -->
   <section id="s9">
-    <h2 class="sec"><span class="num">09</span>Compiler &amp; exécuter</h2>
+    <h2 class="sec"><span class="num">11</span>Compiler &amp; exécuter</h2>
     <p>Deux commandes dans le terminal, dans le dossier où est ton fichier :</p>
 <pre class="sh"><span class="cmt"># 1) compiler : transforme Ecole.java en Ecole.class</span>
 javac Ecole.java
@@ -408,7 +542,7 @@ java Ecole</pre>
 
   <!-- S10 -->
   <section id="s10">
-    <h2 class="sec"><span class="num">10</span>Erreurs fréquentes (à relire avant de rendre)</h2>
+    <h2 class="sec"><span class="num">12</span>Erreurs fréquentes (à relire avant de rendre)</h2>
     <table class="gl">
       <tr><th>Symptôme</th><th>Cause / correctif</th></tr>
       <tr><td>class ... is public, should be declared in a file named ...</td><td>Renomme le fichier comme la classe <code>public</code>.</td></tr>
